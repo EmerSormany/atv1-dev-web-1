@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0;">
+    <h1>Alterar a Senha</h1>
+        <div>
+        <a href="/">
+            <button type="button">Home</button>
+        </a>
+    </div>
+        <form action="/alterarSenha" method="post" style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+        <div>
+            <label for="nomeUsuario">Senha Atual:</label>
+            <input type="password" name="senhaAntiga" />
+        </div>
+        <div>
+            <label for="senhaNova1">Nova Senha:</label>
+            <input type="password" name="senhaNova1" />
+        </div>
+        <div>
+            <label for="senhaNova2">Confirme a Nova Senha:</label>
+            <input type="password" name="senhaNova2" />
+        </div>
+        <div>
+            <button type="submit">Confirmar Alteração de Senha</button>
+        </div>     
+    </form>
+</body>
+</html>

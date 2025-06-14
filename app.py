@@ -2,6 +2,7 @@
 #importar a classe Flask
 from flask import *
 
+# importa a conexao de banco de dados
 import gestaoBD
 
 #instanciar o servidor Flask
@@ -38,18 +39,20 @@ def cadastrarUsuario():
     return render_template('paginaCadastroUsuario.html')
 
 #rota para receber login e senha e fazer a autenticação (login)
-@app.route("/autenticarUsuario", methods=['POST'])
+@app.route("/autenticarUsuario", methods=[ 'GET' ,'POST'])
 def autenticar():
-    login = request.form.get("loginUsuario")
-    senha = str(request.form.get("senhaUsuario"))
-    
-    logado=gestaoBD.login(login, senha)
+    if request.method == 'POST':
+        login = request.form.get("loginUsuario")
+        senha = str(request.form.get("senhaUsuario"))
 
-    if(logado==True):
-        return render_template("logado.html")
-    else:    
-        mensagem="usuario ou senha incorreto"
-        return render_template("home.html", mensagem=mensagem)
+        if(gestaoBD.login(login, senha)==True):
+            mensagem="usuario logado com sucesso"
+            return render_template("resultado.html", mensagem=mensagem)
+        else:    
+            mensagem="usuario ou senha incorreto"
+            return render_template("resultado.html", mensagem=mensagem)
+    else:
+        return render_template("paginaLogin.html")
 
 @app.route("/listarUsuarios")
 def listarUsuarios():

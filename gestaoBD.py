@@ -49,9 +49,8 @@ def listarUsuarios():
 def login(login, senha):
     conn = sqlite.connect('gestaoDB.sqlite')
     cursor = conn.cursor()
-    #cursor.execute(f"SELECT * FROM usuarios WHERE login='{login}' and senha='{senha}'")
     cursor.execute("SELECT * FROM usuarios WHERE login=? and senha=?", (login, senha))
-    dados = cursor.fetchall()
+    dados = cursor.fetchall()   
     conn.close()
     if len(dados) > 0:
         return True

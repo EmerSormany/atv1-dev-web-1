@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0;">
+    <div>
+        <h1>Página de Cadastro de Usuário</h1>
+    </div>
+    <div>
+        <a href="/">
+            <button type="button">Home</button>
+        </a>
+    </div>
+    <form action="/cadastrarUsuario" method="post" style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
+        <div>
+            <label for="nomeUsuario">Nome:</label>
+            <input type="text" name="nomeUsuario" />
+        </div>
+        <div>
+            <label for="loginUsuario">E-mail:</label>
+            <input type="email" name="loginUsuario" />
+        </div>
+        <div>
+            <label for="senhaUsuario">Senha:</label>
+            <input type="password" name="senhaUsuario" />
+        </div>
+        <div>
+            <button type="submit">Cadastrar Usuário</button>
+        </div>     
+    </form>
+</body>
+</html>

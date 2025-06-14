@@ -24,7 +24,16 @@ def inserirUsuario(nome, login, senha):
     conn.close()
 
 def verificarUsuario(login):
-    pass
+    conn = sqlite.connect('gestaoDB.sqlite')
+    cursor = conn.cursor() 
+    cursor.execute('SELECT * FROM usuarios WHERE login=?', (login,))
+    dados = cursor.fetchall()
+    conn.close()
+    if len(dados) > 0:
+        return True
+    else:
+        return False
+
 
 def listarUsuarios():
     conn = sqlite.connect('gestaoDB.sqlite')

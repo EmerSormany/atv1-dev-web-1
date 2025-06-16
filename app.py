@@ -71,7 +71,7 @@ def usuarioLogado(f):
         return f(*args, **kwargs)
     return funcaoDecorada
 
-@app.route("/listarUsuarios")
+@app.route("/listarConvidados")
 @usuarioLogado
 def listarUsuarios():
     lista_usuariosDB = gestaoBD.listarUsuarios()

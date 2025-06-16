@@ -52,7 +52,14 @@ def login(login, senha):
     cursor.execute("SELECT * FROM usuarios WHERE login=? and senha=?", (login, senha))
     dados = cursor.fetchall()   
     conn.close()
+
+    dic_usuario = { 
+        "usuario": (dados[0][0], dados[0][1], dados[0][2]),
+        "logado": False
+        }
+    
     if len(dados) > 0:
-        return True
+        dic_usuario["logado"] = True
+        return dic_usuario
     else:
-        return False
+        return dic_usuario

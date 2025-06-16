@@ -2,6 +2,9 @@
 #importar a classe Flask
 from flask import *
 
+# importa wraps, que permite manter nomes origianais das funções
+from functools import wraps
+
 # importa a conexao de banco de dados
 import gestaoBD
 
@@ -12,6 +15,8 @@ app = Flask(__name__)
 gestaoBD.criarTabela()
 
 usuarios = []
+
+app.secret_key = '123456789acd'
 
 #app.register_blueprint(home_route)
 
@@ -42,23 +47,35 @@ def cadastrarUsuario():
 @app.route("/autenticarUsuario", methods=[ 'GET' ,'POST'])
 def autenticar():
     if request.method == 'POST':
-        login = request.form.get("loginUsuario")
+        email = request.form.get("loginUsuario")
         senha = str(request.form.get("senhaUsuario"))
 
-        if(gestaoBD.login(login, senha)==True):
+        login = gestaoBD.login(email, senha)
+
+        if(login['logado']):
             mensagem="usuario logado com sucesso"
+            session['usuario'] = login['usuario']
             return render_template("resultado.html", mensagem=mensagem)
         else:    
             mensagem="usuario ou senha incorreto"
             return render_template("resultado.html", mensagem=mensagem)
     else:
         return render_template("paginaLogin.html")
+    
+# middleware para proteger rotas de acesso sem login
+def usuarioLogado(f):
+    @wraps(f)
+    def funcaoDecorada(*args, **kwargs):
+        if "usuario" not in session:
+            return render_template("paginaLogin.html", mensagem="Você precisa estar logado para acessar esta página.")
+        return f(*args, **kwargs)
+    return funcaoDecorada
 
 @app.route("/listarUsuarios")
+@usuarioLogado
 def listarUsuarios():
-    #return render_template("lista.html", lista=lista_usuarios)
     lista_usuariosDB = gestaoBD.listarUsuarios()
-    return render_template("lista.html", lista=lista_usuariosDB)
+    return render_template("listarConvidados.html", lista=lista_usuariosDB)
 
 @app.route("/paginaRecuperarSenha")
 def paginaRecuperar():

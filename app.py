@@ -35,10 +35,10 @@ def cadastrarUsuario():
 
         if(gestaoBD.verificarUsuario(login)==False):
             gestaoBD.inserirUsuario(nome, login, senha)
-            mensagem="usuário cadastrado com sucesso"
+            mensagem="Usuário cadastrado com sucesso"
             return render_template("resultado.html", mensagem=mensagem)
         else:
-            mensagem="usuário já existe"
+            mensagem="Usuário já existe"
             return render_template("resultado.html", mensagem=mensagem)
     
     return render_template('paginaCadastroUsuario.html')
@@ -48,24 +48,24 @@ def cadastrarUsuario():
 def autenticar():
     if request.method == 'POST':
         email = request.form.get("loginUsuario")
-        senha = str(request.form.get("senhaUsuario"))
+        senha = request.form.get("senhaUsuario")
 
-        if(not gestaoBD.verificarUsuario(email)):
+        encontrado = gestaoBD.verificarUsuario(email)
+
+        if(encontrado):
+            if(encontrado[0][3] == senha):
+                mensagem="Usuario logado com sucesso"
+                session['usuario_id'] = encontrado[0][0]
+                return render_template("resultado.html", mensagem=mensagem)
+            else:    
+                mensagem="Usuario ou senha incorreto"
+                return render_template("resultado.html", mensagem=mensagem)
+        else:
             mensagem="Você não possui cadastro, por favor, cadastre-se."
-            return render_template("resultado.html", mensagem=mensagem)
-        
-        login = gestaoBD.login(email, senha)
-
-        if(login['logado']):
-            mensagem="usuario logado com sucesso"
-            session['usuario'] = login['usuario']
-            return render_template("resultado.html", mensagem=mensagem)
-        else:    
-            mensagem="usuario ou senha incorreto"
             return render_template("resultado.html", mensagem=mensagem)
     else:
         return render_template("paginaLogin.html")
-    
+
 # middleware para proteger rotas de acesso sem login
 def usuarioLogado(f):
     @wraps(f)
@@ -87,7 +87,7 @@ def listarUsuarios():
 def cadastrarConvidado():
     if request.method == 'POST':
         nome = request.form.get('nomeConvidado')
-        id_atendente = session['usuario'][0]
+        id_atendente = session['usuario_id']
 
         gestaoBD.inserirConvidado(nome, id_atendente)
 
@@ -96,27 +96,18 @@ def cadastrarConvidado():
     else:
         return render_template("paginaCadastroConvidado.html")
 
-@app.route("/paginaRecuperarSenha")
+@app.route("/recuperarSenha", methods=['GET', 'POST'])
 def paginaRecuperar():
-    return render_template("recuperacao.html")
-
-@app.route("/recuperarSenha", methods=['POST'])
-def recuperarSenha():
-    nome = request.form.get("nomeUsuario")
-    login = request.form.get("loginUsuario")
-   
-    encontrado=False
-
-    if(gestaoBD.verificarUsuario(login)==True):
-        encontrado=True
-
-    if(encontrado==True):
-        senha = str(gestaoBD.recuperarSenhaBD(nome, login))
-        mensagem="sua senha"+senha
-        return render_template("recuperacao.html", mensagem=mensagem)
-    else:    
-        mensagem="usuario nao encontrado"
-        return render_template("recuperacao.html", mensagem=mensagem)
+    if request.method == 'POST':
+        email = request.form.get("emailUsuario")
+        encontrado = gestaoBD.verificarUsuario(email)
+        if encontrado:
+            mensagem = f"Dados recuperados são login: {encontrado[0][2]} e senha: {encontrado[0][3]}"
+            return render_template("resultado.html", mensagem=mensagem)
+        else:
+            return render_template("resultado.html", mensagem="Usuário não encontrado")
+            
+    return render_template("paginaRecuperarSenha.html")
 
 
 #executar o servidor Flask

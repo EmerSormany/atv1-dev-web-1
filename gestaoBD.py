@@ -53,8 +53,8 @@ def verificarUsuario(login):
     cursor.execute('SELECT * FROM usuarios WHERE login=?', (login,))
     dados = cursor.fetchall()
     conn.close()
-    if len(dados) > 0:
-        return True
+    if dados:
+        return dados
     else:
         return False
 
@@ -69,21 +69,3 @@ def listarUsuarios():
         usuarios.append(dado)
     conn.close()
     return usuarios
-
-def login(login, senha):
-    conn = sqlite.connect('gestaoDB.sqlite')
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM usuarios WHERE login=? and senha=?", (login, senha))
-    dados = cursor.fetchall()   
-    conn.close()
-
-    dic_usuario = { 
-        "usuario": (dados[0][0], dados[0][1], dados[0][2]),
-        "logado": False
-        }
-    
-    if len(dados) > 0:
-        dic_usuario["logado"] = True
-        return dic_usuario
-    else:
-        return dic_usuario

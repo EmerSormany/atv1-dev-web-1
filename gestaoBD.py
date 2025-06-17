@@ -3,6 +3,9 @@ import sqlite3 as sqlite
 def criarTabela():
     conn = sqlite.connect('gestaoDB.sqlite')
     cursor = conn.cursor()
+    
+    cursor.execute('PRAGMA foreign_keys = ON;')
+
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -11,6 +14,16 @@ def criarTabela():
             senha TEXT NOT NULL
         )
     ''')
+
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS convidados (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            id_atendente INTEGER NOT NULL,
+            FOREIGN KEY (id_atendente) REFERENCES usuarios(id)
+        )
+    ''')
+
     conn.commit()
     conn.close()
 
@@ -20,6 +33,17 @@ def inserirUsuario(nome, login, senha):
     cursor.execute('''
         INSERT INTO usuarios (nome, login, senha) VALUES (?, ?, ?)
     ''', (nome, login, senha))
+    conn.commit()
+    conn.close()
+
+def inserirConvidado(nome, id_atendente):
+    conn = sqlite.connect('gestaoDB.sqlite')
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        INSERT INTO convidados (nome, id_atendente) VALUES (?, ?)
+    ''', (nome, id_atendente))
+
     conn.commit()
     conn.close()
 

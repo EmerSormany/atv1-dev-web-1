@@ -71,11 +71,26 @@ def usuarioLogado(f):
         return f(*args, **kwargs)
     return funcaoDecorada
 
+# rota para buscr convidados na lista
 @app.route("/listarConvidados")
 @usuarioLogado
 def listarUsuarios():
     lista_usuariosDB = gestaoBD.listarUsuarios()
     return render_template("listarConvidados.html", lista=lista_usuariosDB)
+
+@app.route("/cadastrarConvidado", methods=[ 'GET' ,'POST'])
+@usuarioLogado
+def cadastrarConvidado():
+    if request.method == 'POST':
+        nome = request.form.get('nomeConvidado')
+        id_atendente = session['usuario'][0]
+
+        gestaoBD.inserirConvidado(nome, id_atendente)
+
+        mensagem="Convidado cadastrado com sucesso"
+        return render_template("resultado.html", mensagem=mensagem)
+    else:
+        return render_template("paginaCadastroConvidado.html")
 
 @app.route("/paginaRecuperarSenha")
 def paginaRecuperar():

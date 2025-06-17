@@ -59,10 +59,15 @@ def verificarUsuario(login):
         return False
 
 
-def listarUsuarios():
+def listarConvidados():
     conn = sqlite.connect('gestaoDB.sqlite')
     cursor = conn.cursor()
-    cursor.execute('SELECT * FROM usuarios order by id desc')
+    cursor.execute('''
+        SELECT convidados.nome AS nome_convidado, usuarios.nome AS nome_atendente
+        FROM convidados
+        INNER JOIN usuarios ON convidados.id_atendente = usuarios.id
+        ORDER BY convidados.id DESC
+    ''')
     dados = cursor.fetchall()
     usuarios = []
     for dado in dados:

@@ -78,9 +78,10 @@ def usuarioLogado(f):
 # rota para buscr convidados na lista
 @app.route("/listarConvidados")
 @usuarioLogado
-def listarUsuarios():
-    lista_usuariosDB = gestaoBD.listarUsuarios()
-    return render_template("listarConvidados.html", lista=lista_usuariosDB)
+def listarConvidados():
+    lista_convidadosDB = gestaoBD.listarConvidados()
+
+    return render_template("listarConvidados.html", convidados=lista_convidadosDB)
 
 @app.route("/cadastrarConvidado", methods=[ 'GET' ,'POST'])
 @usuarioLogado

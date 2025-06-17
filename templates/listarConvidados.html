@@ -13,8 +13,8 @@
     </div>
     <h1>Lista de Convidados</h1>
     <ul>
-        {%for convidado in convidados %}
-            <li> {{ convidado }} </li>
+        {%for nome_convidado, nome_atendente in convidados %}
+            <li>{{ nome_convidado }} - Cadastrado por: {{ nome_atendente }}</li>
         {% endfor %}
     </ul>
 </body>

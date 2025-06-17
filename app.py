@@ -50,6 +50,10 @@ def autenticar():
         email = request.form.get("loginUsuario")
         senha = str(request.form.get("senhaUsuario"))
 
+        if(not gestaoBD.verificarUsuario(email)):
+            mensagem="Você não possui cadastro, por favor, cadastre-se."
+            return render_template("resultado.html", mensagem=mensagem)
+        
         login = gestaoBD.login(email, senha)
 
         if(login['logado']):

@@ -70,7 +70,7 @@ def autenticar():
 def usuarioLogado(f):
     @wraps(f)
     def funcaoDecorada(*args, **kwargs):
-        if "usuario" not in session:
+        if "usuario_id" not in session:
             return render_template("paginaLogin.html", mensagem="Você precisa estar logado para acessar esta página.")
         return f(*args, **kwargs)
     return funcaoDecorada

@@ -81,7 +81,7 @@ def usuarioLogado(f):
 def listarConvidados():
     lista_convidadosDB = gestaoBD.listarConvidados()
 
-    return render_template("listarConvidados.html", convidados=lista_convidadosDB)
+    return render_template("listarConvidados.html", titulo='Lista de Convidados', convidados=lista_convidadosDB)
 
 @app.route("/cadastrarConvidado", methods=[ 'GET' ,'POST'])
 @usuarioLogado
@@ -121,7 +121,7 @@ def buscarConvidado():
             nome_convidado, _ = convidado
             if nome_convidado.lower() == nome.lower():
 
-                return render_template("listarConvidados.html", convidados=[convidado])
+                return render_template("listarConvidados.html", titulo='Convidado Pelo Nome', convidados=[convidado])
 
         mensagem = "Nenhum convidado encontrado com esse nome."
         return render_template("resultado.html", mensagem=mensagem)

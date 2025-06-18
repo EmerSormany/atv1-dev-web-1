@@ -11,7 +11,7 @@
             <button type="button">Home</button>
         </a>
     </div>
-    <h1>Lista de Convidados</h1>
+    <h1>{{ titulo }}</h1>
     <ul>
         {%for nome_convidado, nome_atendente in convidados %}
             <li>{{ nome_convidado }} - Cadastrado por: {{ nome_atendente }}</li>

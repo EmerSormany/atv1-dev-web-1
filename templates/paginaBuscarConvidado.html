@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0;">
+    <h1>Buscar Convidado</h1>
+    <div>
+        <a href="/">
+            <button type="button">Home</button>
+        </a>
+    </div>
+    <form action="/buscarConvidado" method="post">
+        <label for="nomeConvidado">Nome:</label>
+        <input type="text" name="nomeConvidado" required/>
+        <div>
+            <button type="submit">Bsucar</button>
+        </div>  
+    </form>
+</body>
+</html>

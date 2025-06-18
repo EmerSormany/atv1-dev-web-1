@@ -110,6 +110,23 @@ def paginaRecuperar():
             
     return render_template("paginaRecuperarSenha.html")
 
+@app.route("/buscarConvidado", methods=['GET', 'POST'])
+@usuarioLogado
+def buscarConvidado():
+    if request.method == 'POST':
+        nome = request.form.get('nomeConvidado')
+        lista_convidadosDB = gestaoBD.listarConvidados()
+        
+        for convidado in lista_convidadosDB:
+            nome_convidado, _ = convidado
+            if nome_convidado.lower() == nome.lower():
+
+                return render_template("listarConvidados.html", convidados=[convidado])
+
+        mensagem = "Nenhum convidado encontrado com esse nome."
+        return render_template("resultado.html", mensagem=mensagem)
+    
+    return render_template("paginaBuscarConvidado.html")
 
 #executar o servidor Flask
 app.run(debug=True)

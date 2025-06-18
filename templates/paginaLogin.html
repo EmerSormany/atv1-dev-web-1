@@ -18,11 +18,11 @@
     <form action="/autenticarUsuario" method="post" style="display: flex; flex-direction: column; align-items: flex-start; width: 300px;">
         <div>
             <label for="loginUsuario">E-mail:</label>
-            <input type="email" name="loginUsuario" />
+            <input type="email" name="loginUsuario" required/>
         </div>
         <div>
             <label for="senhaUsuario">Senha:</label>
-            <input type="password" name="senhaUsuario" />
+            <input type="password" name="senhaUsuario" required/>
         </div>
         <div>
             <button type="submit">Realizar Login</button>

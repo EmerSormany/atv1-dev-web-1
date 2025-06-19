@@ -179,5 +179,11 @@ def alterarSenha():
 
     return render_template("paginaAlterarSenha.html")
 
+# rota para deslogar
+@app.route("/deslogar")
+def deslogar():
+    session.pop('usuario', None)
+    return render_template("paginaLogin.html", mensagem="Você foi deslogado com sucesso.")
+
 #executar o servidor Flask
 app.run(debug=True)

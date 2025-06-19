@@ -148,5 +148,31 @@ def removerConvidado():
     
     return render_template("paginaRemoverConvidado.html")
 
+@app.route("/alterarSenha", methods=['GET', 'POST'])
+@usuarioLogado
+def alterarSenha():
+    if request.method == 'POST':
+        senha_antiga = request.form.get('senhaAntiga')
+        nova_senha_1 = request.form.get('senhaNova1')
+        nova_senha_2 = request.form.get('senhaNova2')
+
+        if nova_senha_1 != nova_senha_2:
+            mensagem = "As novas senhas não coincidem"
+            return render_template("resultado.html", mensagem=mensagem)
+        else:
+            usuario = gestaoBD.verificarUsuario(session['usuario']['email'])
+
+            if usuario[0][3] == senha_antiga:
+                gestaoBD.atualizarSenhaUsuario(session['usuario']['id'], nova_senha_1)
+                mensagem = "Senha alterada com sucesso"
+                return render_template("resultado.html", mensagem=mensagem)
+            else:
+                mensagem = "Senha antiga incorreta"
+                return render_template("resultado.html", mensagem=mensagem)
+            
+
+    return render_template("paginaAlterarSenha.html")
+
+
 #executar o servidor Flask
 app.run(debug=True)

@@ -80,3 +80,10 @@ def removerConvidado(id_convidado):
     cursor.execute('DELETE FROM convidados WHERE id=?', (id_convidado,))
     conn.commit()
     conn.close()
+
+def atualizarSenhaUsuario(id_usuario, senha):
+    conn = sqlite.connect('gestaoDB.sqlite')
+    cursor = conn.cursor()
+    cursor.execute('UPDATE usuarios SET senha=? WHERE id=?', (senha, id_usuario))
+    conn.commit()
+    conn.close()

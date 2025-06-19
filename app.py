@@ -151,8 +151,6 @@ def removerConvidado():
         gestaoBD.removerConvidado(id_convidado)
         mensagem = "Convidado removido com sucesso"
         return render_template("resultado.html", mensagem=mensagem)
-    
-    return render_template("paginaRemoverConvidado.html")
 
 @app.route("/alterarSenha", methods=['GET', 'POST'])
 @usuarioLogado

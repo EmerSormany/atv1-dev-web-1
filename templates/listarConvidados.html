@@ -21,12 +21,19 @@
         {%for id_convidado, nome_convidado, nome_atendente in convidados %}
             <li>
                 {{ nome_convidado }} - Cadastrado por: {{ nome_atendente }}
-                <form action="{{ url_for('removerConvidado') }}" method="POST" style="display:inline;">
+                <form action="/removerConvidado" method="POST" style="display:inline;">
                     <input type="hidden" name="id" value="{{ id_convidado }}">
                     <button type="submit">Excluir</button>
                 </form>
             </li>
         {% endfor %}
     </ul>
+    <form action="/buscarConvidado" method="post">
+        <label for="nomeConvidado">Nome do Convidado:</label>
+        <input type="text" name="nomeConvidado" required/>
+        <div>
+            <button type="submit">Bsucar</button>
+        </div>  
+    </form>
 </body>
 </html>

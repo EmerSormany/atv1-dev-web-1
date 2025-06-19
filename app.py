@@ -16,7 +16,7 @@ gestaoBD.criarTabela()
 
 usuarios = []
 
-app.secret_key = '123456789acd' # usar vaiável de ambiente para segurança
+app.secret_key = '123456789acd'
 
 #rota padrão (página principal)
 @app.route("/")
@@ -137,9 +137,7 @@ def buscarConvidado():
                 return render_template("listarConvidados.html", titulo='Convidado Pelo Nome', convidados=[convidado])
 
         mensagem = "Nenhum convidado encontrado com esse nome."
-        return render_template("resultado.html", mensagem=mensagem)
-    
-    return render_template("paginaBuscarConvidado.html")
+        return render_template("listarConvidados.html", mensagem=mensagem)
 
 # rota para remover convidado
 @app.route("/removerConvidado", methods=['POST'])

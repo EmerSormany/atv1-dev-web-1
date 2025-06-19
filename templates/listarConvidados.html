@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='estilo.css') }}">
 </head>
-<body style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0;">
+<body>
     <div>
         <a href="/logado">
             <button type="button">Home</button>
@@ -17,6 +18,13 @@
         mensagem 
         }}
     </p>
+    <form action="/buscarConvidado" method="post">
+        <label for="nomeConvidado">Nome do Convidado:</label>
+        <input type="text" name="nomeConvidado" required/>
+        <div>
+            <button type="submit">Bsucar</button>
+        </div>  
+    </form>
     <ul>
         {%for id_convidado, nome_convidado, nome_atendente in convidados %}
             <li>
@@ -28,12 +36,5 @@
             </li>
         {% endfor %}
     </ul>
-    <form action="/buscarConvidado" method="post">
-        <label for="nomeConvidado">Nome do Convidado:</label>
-        <input type="text" name="nomeConvidado" required/>
-        <div>
-            <button type="submit">Bsucar</button>
-        </div>  
-    </form>
 </body>
 </html>

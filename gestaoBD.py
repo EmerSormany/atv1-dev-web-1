@@ -63,10 +63,10 @@ def listarConvidados():
     conn = sqlite.connect('gestaoDB.sqlite')
     cursor = conn.cursor()
     cursor.execute('''
-        SELECT convidados.nome AS nome_convidado, usuarios.nome AS nome_atendente
+        SELECT convidados.id AS id_convidado, convidados.nome AS nome_convidado, usuarios.nome AS nome_atendente
         FROM convidados
         INNER JOIN usuarios ON convidados.id_atendente = usuarios.id
-        ORDER BY convidados.id DESC
+        ORDER BY convidados.id
     ''')
     dados = cursor.fetchall()
     usuarios = []
@@ -74,3 +74,10 @@ def listarConvidados():
         usuarios.append(dado)
     conn.close()
     return usuarios
+
+def removerConvidado(id_convidado):
+    conn = sqlite.connect('gestaoDB.sqlite')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM convidados WHERE id=?', (id_convidado,))
+    conn.commit()
+    conn.close()

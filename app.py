@@ -16,9 +16,7 @@ gestaoBD.criarTabela()
 
 usuarios = []
 
-app.secret_key = '123456789acd'
-
-#app.register_blueprint(home_route)
+app.secret_key = '123456789acd' # usar vaiável de ambiente para segurança
 
 #rota padrão (página principal)
 @app.route("/")
@@ -83,6 +81,7 @@ def listarConvidados():
 
     return render_template("listarConvidados.html", titulo='Lista de Convidados', convidados=lista_convidadosDB)
 
+# rota para cadastrar convidado
 @app.route("/cadastrarConvidado", methods=[ 'GET' ,'POST'])
 @usuarioLogado
 def cadastrarConvidado():
@@ -97,6 +96,7 @@ def cadastrarConvidado():
     else:
         return render_template("paginaCadastroConvidado.html")
 
+# rota para recuperar senha
 @app.route("/recuperarSenha", methods=['GET', 'POST'])
 def paginaRecuperar():
     if request.method == 'POST':
@@ -110,6 +110,7 @@ def paginaRecuperar():
             
     return render_template("paginaRecuperarSenha.html")
 
+# rota para buscar convidado pelo nome
 @app.route("/buscarConvidado", methods=['GET', 'POST'])
 @usuarioLogado
 def buscarConvidado():
@@ -127,6 +128,19 @@ def buscarConvidado():
         return render_template("resultado.html", mensagem=mensagem)
     
     return render_template("paginaBuscarConvidado.html")
+
+# rota para remover convidado
+@app.route("/removerConvidado", methods=['POST'])
+@usuarioLogado
+def removerConvidado():
+    if request.method == 'POST':
+        id_convidado = request.form.get('id')
+
+        gestaoBD.removerConvidado(id_convidado)
+        mensagem = "Convidado removido com sucesso"
+        return render_template("resultado.html", mensagem=mensagem)
+    
+    return render_template("paginaRemoverConvidado.html")
 
 #executar o servidor Flask
 app.run(debug=True)

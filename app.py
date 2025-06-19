@@ -52,8 +52,14 @@ def autenticar():
 
         if(encontrado):
             if(encontrado[0][3] == senha):
+                session['usuario'] = {
+                    'id': encontrado[0][0],
+                    'nome': encontrado[0][1],
+                    'email': encontrado[0][2]
+                }
+
                 mensagem="Usuario logado com sucesso"
-                session['usuario_id'] = encontrado[0][0]
+
                 return render_template("resultado.html", mensagem=mensagem)
             else:    
                 mensagem="Usuario ou senha incorreto"

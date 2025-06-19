@@ -10,7 +10,7 @@ def criarTabela():
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nome TEXT NOT NULL,
-            login TEXT NOT NULL,
+            login TEXT NOT NULL UNIQUE,
             senha TEXT NOT NULL
         )
     ''')
@@ -57,7 +57,6 @@ def verificarUsuario(login):
         return dados
     else:
         return False
-
 
 def listarConvidados():
     conn = sqlite.connect('gestaoDB.sqlite')

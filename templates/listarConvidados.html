@@ -7,11 +7,16 @@
 </head>
 <body style="display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 100vh; margin: 0;">
     <div>
-        <a href="/">
+        <a href="/logado">
             <button type="button">Home</button>
         </a>
     </div>
     <h1>{{ titulo }}</h1>
+    <p>
+        {{
+        mensagem 
+        }}
+    </p>
     <ul>
         {%for id_convidado, nome_convidado, nome_atendente in convidados %}
             <li>

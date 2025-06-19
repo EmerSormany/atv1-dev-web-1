@@ -33,11 +33,11 @@ def cadastrarUsuario():
 
         if(gestaoBD.verificarUsuario(login)==False):
             gestaoBD.inserirUsuario(nome, login, senha)
-            mensagem="Usuário cadastrado com sucesso"
-            return render_template("resultado.html", mensagem=mensagem)
+            mensagem="Usuário cadastrado com sucesso. Faça login para acessar o sistema."
+            return render_template("paginaLogin.html", mensagem=mensagem)
         else:
             mensagem="Usuário já existe"
-            return render_template("resultado.html", mensagem=mensagem)
+            return render_template("paginaCadastroUsuario.html", mensagem=mensagem)
     
     return render_template('paginaCadastroUsuario.html')
 
@@ -60,13 +60,13 @@ def autenticar():
 
                 mensagem="Usuario logado com sucesso"
 
-                return render_template("resultado.html", mensagem=mensagem)
+                return render_template("indexLogado.html", mensagem=mensagem)
             else:    
                 mensagem="Usuario ou senha incorreto"
-                return render_template("resultado.html", mensagem=mensagem)
+                return render_template("paginaLogin.html", mensagem=mensagem)
         else:
             mensagem="Você não possui cadastro, por favor, cadastre-se."
-            return render_template("resultado.html", mensagem=mensagem)
+            return render_template("paginaCadastroUsuario.html", mensagem=mensagem)
     else:
         return render_template("paginaLogin.html")
 
@@ -74,10 +74,16 @@ def autenticar():
 def usuarioLogado(f):
     @wraps(f)
     def funcaoDecorada(*args, **kwargs):
-        if "usuario_id" not in session:
+        if "usuario" not in session:
             return render_template("paginaLogin.html", mensagem="Você precisa estar logado para acessar esta página.")
         return f(*args, **kwargs)
     return funcaoDecorada
+
+# rota para acessar a página logado
+@app.route("/logado")
+@usuarioLogado
+def logado():
+    return render_template("indexLogado.html")
 
 # rota para buscr convidados na lista
 @app.route("/listarConvidados")
@@ -93,7 +99,7 @@ def listarConvidados():
 def cadastrarConvidado():
     if request.method == 'POST':
         nome = request.form.get('nomeConvidado')
-        id_atendente = session['usuario_id']
+        id_atendente = session['usuario']['id']
 
         gestaoBD.inserirConvidado(nome, id_atendente)
 
@@ -110,9 +116,9 @@ def paginaRecuperar():
         encontrado = gestaoBD.verificarUsuario(email)
         if encontrado:
             mensagem = f"Dados recuperados são login: {encontrado[0][2]} e senha: {encontrado[0][3]}"
-            return render_template("resultado.html", mensagem=mensagem)
+            return render_template("paginaRecuperarSenha.html", mensagem=mensagem)
         else:
-            return render_template("resultado.html", mensagem="Usuário não encontrado")
+            return render_template("paginaRecuperarSenha.html", mensagem="Usuário não encontrado")
             
     return render_template("paginaRecuperarSenha.html")
 
@@ -125,7 +131,7 @@ def buscarConvidado():
         lista_convidadosDB = gestaoBD.listarConvidados()
         
         for convidado in lista_convidadosDB:
-            nome_convidado, _ = convidado
+            _, nome_convidado, _ = convidado
             if nome_convidado.lower() == nome.lower():
 
                 return render_template("listarConvidados.html", titulo='Convidado Pelo Nome', convidados=[convidado])
@@ -172,7 +178,6 @@ def alterarSenha():
             
 
     return render_template("paginaAlterarSenha.html")
-
 
 #executar o servidor Flask
 app.run(debug=True)
